@@ -16,8 +16,6 @@ function fetch() {
       limit: 5
     },
     success: function success(response) {
-      console.log(window.offset, response.count);
-
       if (window.offset >= response.count) {
         return;
       }
@@ -27,9 +25,8 @@ function fetch() {
       $('#messages').append();
       window.offset += 5;
       this.data = response;
-      console.log(this.data.data);
       $.each(this.data.data, function (key, value) {
-        $('#messages').append("\n                <div class=\"mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg\">\n                    <div class=\"message\">\n                        <div class=\"items-center\">\n                            <div class=\"ml-4 text-lg leading-7 font-semibold\">".concat(value.user.name, " ").concat(value.id, "</div>\n                        </div>\n\n                        <div class=\"ml-12\">\n                            <div class=\"mt-2 text-gray-600 dark:text-gray-400 text-sm\">").concat(value.text, "\n                                <div>\n                                    <img src=\"/").concat(value.image, "\" alt=\"\">\n                                </div>\n                            </div>\n                        </div>\n\n                        <div class=\"items-center\">\n                            <button class=\"add_like\" type=\"button\" data-id=\"").concat(value.id, "\">").concat(value.likes_count, "</button>\n                        </div>\n                        <div class=\"items-center\">\n                            <button class=\"favorite\" type=\"button\" data-id=\"").concat(value.id, "\">").concat(statusFavorite(value.id), "</button>\n                        </div>\n                    </div>\n                </div>\n                    "));
+        $('#messages').append("\n                <div class=\"mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg\">\n                    <div class=\"message\">\n                        <div class=\"items-center\">\n                            <div class=\"ml-4 text-lg leading-7 font-semibold\">".concat(value.user.name, "</div>\n                        </div>\n\n                        <div class=\"ml-12\">\n                            <div class=\"mt-2\">").concat(value.text, "\n                                <div>\n                                    <img src=\"/").concat(value.image, "\" alt=\"\">\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"grid-container\">\n                            <div class=\"grid-item\">\n                                <link href=\"https://fonts.googleapis.com/css2?family=Cookie&display=swap\" rel=\"stylesheet\">\n                                <button id=\"btn\" class=\"add_like\" type=\"button\" data-id=\"").concat(value.id, "\">\n                                <span class=\"noselect\">").concat(value.likes_count, "</span>\n                                <div id=\"circle\"></div>\n                                </button>\n                            </div>\n                            <div class=\"grid-item\">\n                                <link href=\"https://fonts.googleapis.com/css2?family=Cookie&display=swap\" rel=\"stylesheet\">\n                                <button id=\"btn\" class=\"favorite\" type=\"button\" data-id=\"").concat(value.id, "\">\n                                <span class=\"noselect\">").concat(statusFavorite(value.id), "</span>\n                                <div id=\"circle\"></div>\n                                </button>\n                            </div>\n                        </div>\n                </div>\n                    "));
       });
       $('.add_like').on('click', function () {
         var message_id = $(this).data().id;
@@ -37,7 +34,6 @@ function fetch() {
       });
       $('.favorite').on('click', function () {
         var message_id = $(this).data().id;
-        console.log(message_id);
         addDelFavorite(message_id);
         $(this).html(statusFavorite(message_id));
       });
@@ -46,9 +42,11 @@ function fetch() {
 }
 
 function submitForm() {
+  var _$$0$files$;
+
   var formData = new FormData();
   formData.append('text', $("#text").val());
-  formData.append("image_file", $("#image")[0].files[0]);
+  formData.append("image_file", (_$$0$files$ = $("#image")[0].files[0]) !== null && _$$0$files$ !== void 0 ? _$$0$files$ : '');
   $.ajax({
     headers: {
       'Authorization': 'Bearer ' + window.api_token
@@ -112,7 +110,6 @@ $(document).ready(function ($) {
   fetch();
   $(window).scroll(function () {
     if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-      console.log('scroll');
       fetch();
     }
   });

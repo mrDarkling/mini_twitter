@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Like;
 use App\Models\Message;
@@ -38,16 +39,19 @@ class MessagesController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MessageRequest $request)
     {
         $data = $request->all();
 
         $file = $data['image_file'];
-        Storage::disk('public')->put('images/', $file);
+
+        if (!empty($file)) {
+            Storage::disk('public')->put('images/', $file);
+        }
 
         $model = new Message();
         $model->text = $data['text'] ?? '';
-        $model->image = 'storage/images/' . $file->hashName();
+        $model->image = is_null($file) ? null : 'storage/images/' . $file->hashName();
         $model->user_id = auth()->user()->id;
         $model->save();
 
@@ -72,7 +76,7 @@ class MessagesController extends Controller
      * @param Message $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Message $message)
+    public function update(MessageRequest $request, Message $message)
     {
         $message->fill($request->all())->save();
 

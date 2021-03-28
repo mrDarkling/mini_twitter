@@ -8,7 +8,6 @@ function fetch() {
         type: 'GET',
         data: {offset: window.offset, limit: 5},
         success: function (response) {
-            console.log(window.offset, response.count)
             if (window.offset >= response.count) {
                 return;
             }
@@ -17,30 +16,39 @@ function fetch() {
             $('#messages').append();
             window.offset += 5;
             this.data = response;
-            console.log(this.data.data)
             $.each(this.data.data, function (key, value) {
                 $('#messages').append(`
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="message">
                         <div class="items-center">
-                            <div class="ml-4 text-lg leading-7 font-semibold">${value.user.name} ${value.id}</div>
+                            <div class="ml-4 text-lg leading-7 font-semibold">${value.user.name}</div>
                         </div>
 
                         <div class="ml-12">
-                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">${value.text}
+                            <div class="mt-2">${value.text}
                                 <div>
                                     <img src="/${value.image}" alt="">
                                 </div>
                             </div>
                         </div>
-
-                        <div class="items-center">
-                            <button class="add_like" type="button" data-id="${value.id}">${value.likes_count}</button>
-                        </div>
-                        <div class="items-center">
-                            <button class="favorite" type="button" data-id="${value.id}">${statusFavorite(value.id)}</button>
-                        </div>
                     </div>
+
+                    <div class="grid-container">
+                            <div class="grid-item">
+                                <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+                                <button id="btn" class="add_like" type="button" data-id="${value.id}">
+                                <span class="noselect">${value.likes_count}</span>
+                                <div id="circle"></div>
+                                </button>
+                            </div>
+                            <div class="grid-item">
+                                <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+                                <button id="btn" class="favorite" type="button" data-id="${value.id}">
+                                <span class="noselect">${statusFavorite(value.id)}</span>
+                                <div id="circle"></div>
+                                </button>
+                            </div>
+                        </div>
                 </div>
                     `);
             });
@@ -51,7 +59,6 @@ function fetch() {
 
             $('.favorite').on('click', function () {
                 let message_id = $(this).data().id;
-                console.log(message_id)
                 addDelFavorite(message_id)
                 $(this).html(statusFavorite(message_id))
             });
@@ -62,7 +69,7 @@ function fetch() {
 function submitForm() {
     let formData = new FormData();
     formData.append('text', $("#text").val());
-    formData.append("image_file", $("#image")[0].files[0]);
+    formData.append("image_file", ($("#image")[0].files[0]) ?? '');
     $.ajax({
         headers: {
             'Authorization': 'Bearer ' + window.api_token,
@@ -96,7 +103,7 @@ function addDelFavorite(message_id) {
 function statusFavorite(message_id) {
     let keyName = 'is_msg_favorite_' + message_id;
 
-    return !!localStorage[keyName]? 'Из избранного' : 'В избранное';
+    return !!localStorage[keyName] ? 'Из избранного' : 'В избранное';
 }
 
 
@@ -128,7 +135,6 @@ $(document).ready(function ($) {
     fetch();
     $(window).scroll(function () {
         if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-            console.log('scroll')
             fetch();
         }
     });

@@ -29,10 +29,13 @@
                         <p><b>Изображение:</b><br>
                         <input name="image_file" id="image" type="file">
                     </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Очистить</button>
-                        <button type="button" id="submit" class="btn btn-primary">Сохранить</button>
+                <div class="buttons">
+                    <div class="container">
+                        <button type="button" id="submit" class="btn effect01" target="_blank">Сохранить</button>
                     </div>
+                </div>
+
+
             </form>
         </div>
         <div id="messages">
