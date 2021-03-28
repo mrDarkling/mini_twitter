@@ -13,7 +13,11 @@ class User extends Authenticatable
         'Пупкин',
         'Бананковский',
         'Работяга',
-        'Свинтушкин'
+        'Свинтушкин',
+        'Виртуальная сопля',
+        'Сильвестр в столовой',
+        'Лысый из BRAZZERS',
+        'Чумовой гульфик'
     ];
     /**
      * The attributes that are mass assignable.
