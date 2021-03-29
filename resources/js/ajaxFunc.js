@@ -66,29 +66,25 @@ function fetch() {
     })
 }
 
-function submitForm() {
-    let formData = new FormData();
-    formData.append('text', $("#text").val());
-    formData.append("image_file", ($("#image")[0].files[0]) ?? '');
+$('#addMessage').on('submit',function(e){
+    e.preventDefault();
+    form = $(this)[0];
     $.ajax({
         headers: {
             'Authorization': 'Bearer ' + window.api_token,
         },
-        url: "/api/messages",
-        method: "post",
-        data: formData,
+        url: $(this).attr('action'),
+        method: 'post',
+        data: new FormData(form),
         cache: false,
         processData: false,
         contentType: false,
-        success: function () {
-            $("#text").val('');
-            $("#image").val(null);
+        success: function(){
+            form.reset();
+            fetch();
         }
-    }).done(function (data) {
-        fetch()
-    });
-    return false;
-}
+    })
+})
 
 function addDelFavorite(message_id) {
     let keyName = 'is_msg_favorite_' + message_id;
@@ -128,10 +124,6 @@ function addLike(message_id, button) {
 $(document).ready(function ($) {
     window.offset = 0;
 
-    $('#submit').click(function (e) {
-        submitForm();
-    })
-
     fetch();
     $(window).scroll(function () {
         if ($(window).scrollTop() === $(document).height() - $(window).height()) {
@@ -139,5 +131,3 @@ $(document).ready(function ($) {
         }
     });
 });
-
-

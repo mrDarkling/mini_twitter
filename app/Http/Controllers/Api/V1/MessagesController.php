@@ -41,9 +41,13 @@ class MessagesController extends Controller
      */
     public function store(MessageRequest $request)
     {
-        $data = $request->all();
 
-        $file = $data['image_file'];
+        $data = $request->all();
+        $file = null;
+
+        if (key_exists('image_file', $data)) {
+            $file = $data['image_file'];
+        }
 
         if (!empty($file)) {
             Storage::disk('public')->put('images/', $file);

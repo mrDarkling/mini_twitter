@@ -20,7 +20,7 @@
             <hr style="height: 1px;color: black;background-color: black;">
         </div>
         <div>
-            <form name="test" method="post" action="input1.php">
+            <form name="test" method="post" action="/api/messages" id="addMessage">
                 <p><b>Ваш твит:</b><br>
                     <label>
                         <textarea name="text" id="text" cols="40" rows="3"></textarea>
@@ -31,7 +31,7 @@
                     </div>
                 <div class="buttons">
                     <div class="container">
-                        <button type="button" id="submit" class="btn effect01" target="_blank">Сохранить</button>
+                        <button type="submit" id="submit" class="btn effect01">Сохранить</button>
                     </div>
                 </div>
 
