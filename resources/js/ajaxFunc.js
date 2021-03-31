@@ -126,8 +126,24 @@ $(document).ready(function ($) {
 
     fetch();
     $(window).scroll(function () {
-        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
+        console.log(`
+        $(window).scrollTop() >= ($(document).height() - $(window).height()) = ${$(window).scrollTop() >= ($(document).height() - $(window).height())}
+        $(window).scrollTop() = ${$(window).scrollTop()}
+        $(document).height() - $(window).height()) = ${$(document).height() - $(window).height()}
+        $(window).height() = ${$(window).height()}
+        $(document).height() = ${$(document).height()}
+
+        `);
+        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
             fetch();
         }
     });
 });
+
+
+
+
+
+
+
+//
